@@ -1,14 +1,23 @@
-package hu.prooktatas.djs
+package hu.prooktatas.djs.fragment
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.EditText
+import hu.prooktatas.djs.*
+import hu.prooktatas.djs.model.UserPreferences
 
-class MainActivity : AppCompatActivity() {
+
+private const val ARG_PARAM1 = "prefs"
+
+class WorkPreferencesFragment : Fragment() {
+
+    private var userPreferences: UserPreferences? = null
 
     private lateinit var cb1: CheckBox      // full time
     private lateinit var cb2: CheckBox      // part time
@@ -18,8 +27,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var etName: EditText
     private lateinit var etPosition: EditText
-
-    private lateinit var button: Button
 
     private val workPrefs: Int
         get() {
@@ -51,56 +58,38 @@ class MainActivity : AppCompatActivity() {
             return arrayOf(v0, v1, v2, v3, v4).sum()
         }
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        Log.d(TAG, "onCreate")
-
-        cb1 = findViewById(R.id.cbFullTime)
-        cb2 = findViewById(R.id.cbPartTime)
-        cb3 = findViewById(R.id.cbRemote)
-        cb4 = findViewById(R.id.cbContractor)
-        cb5 = findViewById(R.id.cbFreelancer)
-
-        etName = findViewById(R.id.etName)
-        etPosition = findViewById(R.id.etPosition)
-
-        button = findViewById(R.id.btnSubmit)
-
-        button.setOnClickListener {
-            saveAppData()
+        arguments?.let {
+            userPreferences = it.getSerializable(ARG_PARAM1) as? UserPreferences
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart")
-        loadAppData()
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        val rootView = inflater.inflate(R.layout.fragment_work_preferences, container, false)
 
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop")
-//        saveAppData()
-    }
+        cb1 = rootView.findViewById(R.id.cbFullTime)
+        cb2 = rootView.findViewById(R.id.cbPartTime)
+        cb3 = rootView.findViewById(R.id.cbRemote)
+        cb4 = rootView.findViewById(R.id.cbContractor)
+        cb5 = rootView.findViewById(R.id.cbFreelancer)
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        Log.d(TAG, "onRestoreInstanceState")
-        loadAppData()
-    }
+        etName = rootView.findViewById(R.id.etName)
+        etPosition = rootView.findViewById(R.id.etPosition)
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        Log.d(TAG, "onSaveInstanceState")
-        saveAppData()
+        return rootView
     }
 
     private fun loadAppData() {
         Log.d(TAG, "loadAppData() called")
 
-        val prefs = getPreferences(Context.MODE_PRIVATE)
+        val prefs = activity!!.getPreferences(Context.MODE_PRIVATE)
 
         prefs.getString(PREF_KEY_APPLICANT_NAME, null)?.let {
             etName.setText(it)
@@ -120,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
         //        val editor = getPreferences(Context.MODE_PRIVATE).edit()
 
-        with(getPreferences(Context.MODE_PRIVATE).edit()) {
+        with(activity!!.getPreferences(Context.MODE_PRIVATE).edit()) {
             Log.d(TAG, "workPrefs value: $workPrefs")
             putInt(PREF_KEY_WORK_PREFS, workPrefs)
 
@@ -182,23 +171,17 @@ class MainActivity : AppCompatActivity() {
             it.isChecked = true
         }
     }
+
+    companion object {
+
+        @JvmStatic
+        fun newInstance(prefs: UserPreferences? = null) =
+            WorkPreferencesFragment().apply {
+
+                arguments = Bundle().apply {
+                    putSerializable(ARG_PARAM1, prefs)
+                }
+            }
+    }
 }
 
-const val TAG = "KZs"
-const val PREF_KEY_WORK_PREFS = "workPrefs"
-const val PREF_KEY_APPLICANT_NAME = "applicantName"
-const val PREF_KEY_PREFERRED_POSITION = "preferredPosition"
-
-// TODO: nezzuk meg ADB-ben a futo prooktats app-ok folyamtait: adb shell ps | grep hu.prooktatas
-
-// TODO: kuldjunk trim memory parancsot az appnak: adb shell am send-trim-memory hu.prooktatas.djs MODERATE (onTrimMemory metodust felul kell irni hozza)
-
-// TODO: lojuk ki ADB-bol az app-ot es figyeljuk meg, hogy menti-e az adatokat: adb shell am kill hu.prooktatas.djs
-
-// https://stackoverflow.com/questions/8710652/android-simulator-easy-way-to-simulate-a-process-restart-due-to-low-memory
-// https://stackoverflow.com/questions/5287237/simulate-killing-of-activity-in-emulator
-// https://stackoverflow.com/questions/3656594/simulate-low-battery-low-memory-in-android
-
-// Hasznos ADB parancsok: https://gist.github.com/Pulimet/5013acf2cd5b28e55036c82c91bd56d8
-
-// Shared Preferences hasznalata: https://developer.android.com/training/data-storage/shared-preferences

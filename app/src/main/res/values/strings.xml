@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">DreamJobSearch</string>
+
+    <string name="tab_1">Prefs</string>
+    <string name="tab_2">Locations</string>
+    <string name="tab_3">Photo</string>
+
+
+    <string name="your_photo">Your photo will be placed here</string>
+    <string name="your_name">Your name</string>
+    <string name="position">Position to apply</string>
+    <string name="work_preferences">Work preferences</string>
+    <string name="full_time">Full time employee</string>
+    <string name="part_time">Part time job</string>
+    <string name="contractor">Contractor</string>
+    <string name="remote">Remote</string>
+    <string name="freelancer">Freelancer</string>
+    <string name="list_dream_jobs">List Dream Jobs</string>
 </resources>
