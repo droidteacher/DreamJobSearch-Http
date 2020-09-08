@@ -16,4 +16,9 @@
     <string name="remote">Remote</string>
     <string name="freelancer">Freelancer</string>
     <string name="list_dream_jobs">List Dream Jobs</string>
+
+    <string name="country">Country:</string>
+    <string name="zip_code">Zip code</string>
+    <string name="city">City:</string>
+    <string name="address">Address:</string>
 </resources>

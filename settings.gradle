@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "DreamJobSearch"
+rootProject.name = "DreamJobSearch-Map"
