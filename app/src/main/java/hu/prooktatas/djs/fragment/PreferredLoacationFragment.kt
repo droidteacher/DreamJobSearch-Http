@@ -31,6 +31,14 @@ import java.io.IOException
 
 class PreferredLoacationFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
 
+
+    var preferredLocation: String? = null
+        get() = selectedCity ?: selectedCountry
+
+
+    private var selectedCity: String? = null
+    private var selectedCountry: String? = null
+
     private var googleMap: GoogleMap? = null
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -72,9 +80,13 @@ class PreferredLoacationFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnM
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
     }
 
-    override fun onStart() {
-        super.onStart()
+
+    override fun onResume() {
+        super.onResume()
         Log.d(TAG, "onStart")
+
+        selectedCountry = null
+        selectedCity = null
     }
 
     override fun onMapReady(p0: GoogleMap?) {
@@ -128,6 +140,9 @@ class PreferredLoacationFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnM
             tvCountry.text = it.countryName
             tvCity.text = it.locality
             tvAddress.text = "${it.thoroughfare} ${it.featureName}"
+
+            selectedCountry = it.countryName
+            selectedCity = it.locality
         }
 
         Log.d(TAG, "Adress: $address")

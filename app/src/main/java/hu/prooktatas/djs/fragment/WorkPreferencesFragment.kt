@@ -17,6 +17,21 @@ private const val ARG_PARAM1 = "prefs"
 
 class WorkPreferencesFragment : Fragment() {
 
+    var userInputPosition: String? = null
+        get() {
+            if (etPosition.text.isNotEmpty()) {
+                return etPosition.text.toString()
+            }
+
+            return null
+        }
+
+    var isFullTimeAcceptable: Boolean = false
+        get() {
+            return cb1.isChecked
+        }
+
+
     private var userPreferences: UserPreferences? = null
 
     private lateinit var cb1: CheckBox      // full time
@@ -57,7 +72,6 @@ class WorkPreferencesFragment : Fragment() {
 
             return arrayOf(v0, v1, v2, v3, v4).sum()
         }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

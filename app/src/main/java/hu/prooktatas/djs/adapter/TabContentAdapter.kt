@@ -12,11 +12,15 @@ import hu.prooktatas.djs.model.UserPreferences
 
 class TabContentAdapter(private val ctx: Context, private val prefs: UserPreferences, mgr: FragmentManager): FragmentStatePagerAdapter(mgr) {
 
+    private val tab1 = WorkPreferencesFragment.newInstance(prefs)
+    private val tab2 = PhotoFragment.newInstance()
+    private val tab3 = PreferredLoacationFragment()
+
     override fun getItem(position: Int): Fragment {
         return when(position) {
-            0 -> WorkPreferencesFragment.newInstance(prefs)
-            1 -> PhotoFragment.newInstance()
-            else -> PreferredLoacationFragment()
+            0 -> tab1
+            1 -> tab2
+            else -> tab3
         }
     }
 
