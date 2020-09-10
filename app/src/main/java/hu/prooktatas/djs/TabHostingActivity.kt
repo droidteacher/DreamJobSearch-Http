@@ -83,11 +83,17 @@ class TabHostingActivity : AppCompatActivity(), JobResultCallback {
     }
 
 
-
+    /**
+     * Sorrendben probald ki a kimommentezett metodusokat.
+     * Ertelemszeruen mindig csak az egyik legyen elesitve, a tobbi maradjon kikommentezve.
+     * A simpleFetch() hivas NetworkOnMainThread kivetelt dob. Szandekosan hagytuk benne, hiszen az is a tananyag resze itt,
+     * hogy megtanuljuk, main thread-en nem inditunk halozati kerest!
+     */
     private fun searchForDreamJobs() {
+
 //        simpleFetch()
 
-//        fetchUsingAsyncTaskDefaultUrl()
+        fetchUsingAsyncTaskDefaultUrl()
 
 //        fetchUsingAsyncTaskWithFakeParams()
 
@@ -97,7 +103,7 @@ class TabHostingActivity : AppCompatActivity(), JobResultCallback {
 
 //        fetchUsingOKHttpSampleAsync()
 
-        fetchUsingOKHttpAsyncWithUserInput()
+//        fetchUsingOKHttpAsyncWithUserInput()
 
 //        fetchUsingSpringBootBackendLocalhost()
 
